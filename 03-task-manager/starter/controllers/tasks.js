@@ -1,12 +1,21 @@
-const getAllTasks = ( req,res ) => res.json({
-        message: "✅ All tasks fetched successfully",
-        tasks: [
-            { id: 1, title: "Learn Express" },
-            { id: 2, title: "Practice with Postman" }
-        ]
-    });
-const createTask = ( req,res ) => {
-    res.json(req.body,);
+const Task = require('../models/task.js');
+const getAllTasks = async ( req,res ) => {
+   
+    try {
+        const tasks = await Task.find({})
+        res.status(200).json({ tasks, nbHits: tasks.length });
+    } catch (error) {
+        res.status(500).json({ msg: error });
+    }
+
+}
+const createTask = async ( req,res ) => {
+   try {
+    const task = await Task.create(req.body)
+    res.status(201).json({ task });
+   } catch (error) {
+       res.status(500).json({ msg: error });
+}
 }
 const getTask = ( req,res ) => {
     res.json({
